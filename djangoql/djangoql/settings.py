@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'rest_framework',
+    'django.contrib.staticfiles', # Required for GraphiQL
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -108,6 +109,10 @@ REST_FRAMEWORK = {
         #'rest_framework.renderers.JSONRenderer',
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
+}
+
+GRAPHENE = {
+    'SCHEMA': 'djangoql.schema.schema' # Where your Graphene schema lives
 }
 
 # Internationalization

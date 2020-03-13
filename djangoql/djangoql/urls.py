@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include, path
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
+    path('graphql', GraphQLView.as_view(graphiql=True)),
     url(r'^admin/', admin.site.urls),
 ]

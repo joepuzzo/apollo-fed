@@ -1,9 +1,14 @@
 const { ApolloServer } = require("apollo-server-express");
-const { ApolloGateway } = require("@apollo/gateway");
+const {
+  ApolloGateway,
+  RemoteGraphQLDataSource,
+  LocalGraphQLDataSource
+} = require("@apollo/gateway");
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const bodyParser = require("body-parser");
+const schema = require("./localSchema");
 
 const PORT = 4000;
 
@@ -24,9 +29,17 @@ app.get("/health", (req, res) => {
 const server = new ApolloServer({
   gateway: new ApolloGateway({
     serviceList: [
+      { name: "local", url: "local" }, // << Dummy to force load of local schema :)
       { name: "dogs", url: "http://localhost:8001/graphql" },
-      { name: "polls", url: "http://localhost:8000/graphql" },
-    ]
+      { name: "polls", url: "http://localhost:8000/graphql" }
+    ],
+    buildService({ name, url }) {
+      // This will load a local schema!!!
+      if (name === "local") {
+        return new LocalGraphQLDataSource(schema);
+      }
+      return new RemoteGraphQLDataSource({ url });
+    }
   }),
   subscriptions: false
 });

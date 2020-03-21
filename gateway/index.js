@@ -51,3 +51,33 @@ server.applyMiddleware({ app, path: "/graphql", cors: {} });
 http.createServer(app).listen(PORT, () => {
   console.log("Http server is now running on port", PORT);
 });
+
+/** ---------- Example Polling Gateway ----------
+ *
+ * The gateway, by default, will not stay up to date with all
+ * the external scheams. In order to stay up to date, you have
+ * two choices.
+ * 1. You add gateway.startPollingServices() to constantly poll for echema changes
+ * 2. You set up federation manager
+ *
+ * Below is an example of a setup file
+ */
+
+// // Async function to create a gateway
+// const createGateway = async () => {
+//   const gateway = new ApolloGateway({
+//     serviceList: [{ name: 'pricemaster', url: process.env.PRICE_MASTER_GRAPHQL_HOST }],
+//   });
+//   const { schema, executor } = await gateway.load();
+//   // The below line is the key to keeping things up to date!!
+//   gateway.startPollingServices();
+//   return {
+//     schema,
+//     executor,
+//   };
+// };
+// // Create the server with the results from create gateway
+// const server = new ApolloServer({
+//   schema,
+//   executor,
+// });
